@@ -1,15 +1,17 @@
 extern crate rand;
 mod map;
+mod server;
 
-use map::premade_map;
+use map::gen_map;
 use std::sync::mpsc::channel;
 use std::thread;
 use std::io;
 use rand::prelude::*;
 
 fn main() {
+    //server::start();
     let mut rng = thread_rng();
-    let m = premade_map()[rng.gen_range(0, 9)][rng.gen_range(0, 9)];
+    let m = gen_map()[rng.gen_range(0, 9)][rng.gen_range(0, 9)];
     println!("{}", m);
 
     let (tx, rx) = channel::<String>();

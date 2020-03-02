@@ -1,6 +1,6 @@
-pub fn premade_map() -> Vec<Vec<&'static str>> {
+pub fn gen_map() -> Vec<Vec<&'static str>> {
   let mut map: Vec<Vec<&'static str>> = vec![];
-  let descriptions = premade_descriptions();
+  let descriptions = descriptions();
   for i in 0..9 {
     let mut v: Vec<&'static str> = vec![];
     for j in 0..9 {
@@ -11,7 +11,7 @@ pub fn premade_map() -> Vec<Vec<&'static str>> {
   map
 }
 
-fn premade_descriptions() -> [&'static str;100] {
+fn descriptions() -> [&'static str;100] {
   [
     "A crack in the ceiling above the middle of the north wall allows a trickle of water to flow down to the floor. The water pools near the base of the wall, and a rivulet runs along the wall an out into the hall. The water smells fresh.",
     "Thick cobwebs fill the corners of the room, and wisps of webbing hang from the ceiling and waver in a wind you can barely feel. One corner of the ceiling has a particularly large clot of webbing within which a goblin's bones are tangled.",
