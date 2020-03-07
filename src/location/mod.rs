@@ -1,5 +1,5 @@
 pub struct Location {
-    pub description: &'static str
+    pub description: String
 }
 
 impl Location {
@@ -9,7 +9,7 @@ impl Location {
         for i in 0..9 {
             let mut v: Vec<Location> = vec![];
             for j in 0..9 {
-                v.push(Location { description: descriptions[if i == 0 {j} else {(10*i)+j}] });
+                v.push(Location { description: String::from(descriptions[if i == 0 {j} else {(10*i)+j}]) });
             }
             map.push(v);
         }
