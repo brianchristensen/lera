@@ -1,5 +1,5 @@
-use crate::render::title;
-use crate::channel::ChannelPayload;
+use crate::title;
+use crate::data::channel::ChannelPayload;
 
 use uuid::Uuid;
 use std::thread;
@@ -49,15 +49,17 @@ fn wait_for_commands(id: Uuid, mut socket: TcpStream, tx: Sender<ChannelPayload>
             Ok(_data) => {
                 let ascii = buf
                     .iter()
-                    .filter(|&&x| x.is_ascii_alphanumeric() || x.is_ascii_digit() || x == b' ' || x == b'?')
+                    .filter(|&&x| x.is_ascii_alphanumeric() || x.is_ascii_digit() || x == b' ' || x == b'?' || x == b'.' || x == b'!')
                     .map(|&x| x).collect::<Vec<u8>>();
                 let raw_cmd = String::from(std::str::from_utf8(&ascii).unwrap());
                 let fmt_cmd = raw_cmd.replace("\n", "");
                 let cmd = fmt_cmd.as_str().split(' ').filter(|&x| x != "").collect::<Vec<&str>>();
+
                 if cmd.len() == 1 {
                     tx.send(ChannelPayload::Cmd((id, cmd[0].to_lowercase()))).unwrap();
-                } else if cmd.len() == 2 {
-                    tx.send(ChannelPayload::Target((id, cmd[0].to_lowercase(), cmd[1].to_lowercase()))).unwrap();
+                } else if cmd.len() >= 2 {
+                    let target = cmd[1..].join(" ");
+                    tx.send(ChannelPayload::Target((id, cmd[0].to_lowercase(), target))).unwrap();
                 } else {
                     socket.write(format!("Unknown command: {}", cmd[0]).as_bytes()).unwrap();
                 }

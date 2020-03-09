@@ -11,3 +11,4 @@ rand = "0.7.3"
 uuid = { version = "0.8", features = ["v4"] }
 specs = "0.16.1"
 specs-derive = "0.4.0"
+textwrap = { version = "0.11", features = ["term_size"] }

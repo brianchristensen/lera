@@ -1,11 +1,11 @@
-use crate::component::Location;
+use crate::data::component::Location;
 
 impl Location {
     pub fn gen_map() -> Vec<Location> {
         let mut map: Vec<Location> = vec![];
         let descriptions = descriptions();
-        for i in 0..9 {
-            for j in 0..9 {
+        for i in 0..10 {
+            for j in 0..10 {
                 map.push(Location { address: (i, j), description: descriptions[if i == 0 {j} else {(10*i)+j}] });
             }
         }

@@ -1,15 +1,17 @@
 use specs::prelude::*;
-use uuid::Uuid;
 use std::net::TcpStream;
 
 #[derive(Component)]
 pub struct Player {
-  pub id: Uuid,
-  pub name: String,
   pub socket: TcpStream
 }
 
-#[derive(Component, Clone, Copy)]
+#[derive(Component)]
+pub struct Name {
+  pub name: String
+}
+
+#[derive(Debug, Component, Clone, Copy)]
 pub struct Location {
   pub description: &'static str,
   pub address: (usize, usize)
