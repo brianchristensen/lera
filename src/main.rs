@@ -1,3 +1,4 @@
+#[macro_use] extern crate specs_derive;
 extern crate uuid;
 extern crate rand;
 
@@ -5,24 +6,29 @@ mod channel;
 mod render;
 mod server;
 mod component;
+mod map;
 
-use uuid::Uuid;
+use specs::prelude::*;
+use rand::prelude::*;
 use std::thread;
-use std::net::TcpStream;
-use std::sync::mpsc::TryRecvError;
+use std::io::Write;
 use channel::ChannelPayload;
-use component::{PlayerComponent, LocationComponent};
+use component::*;
 
-type EntityIndex = usize;
-
-struct GameState {
-    player_components: Vec<Option<PlayerComponent>>,
-    location_components: Vec<Option<LocationComponent>>,
-    socket: Vec<TcpStream>,
-    players: Vec<(Uuid, EntityIndex)>
+struct State {
+    ecs: World,
+    map: Vec<Location>
 }
 
 fn main() {
+    // init game state
+    let mut gs = State {
+        ecs: World::new(),
+        map: Location::gen_map()
+    };
+    gs.ecs.register::<Player>();
+    gs.ecs.register::<Location>();
+
     // player thread input channel - messages are all received by the main thread
     let (tx, rx) = channel::start();
 
@@ -30,29 +36,39 @@ fn main() {
         server::start(tx);
     });
 
+    let mut rng = rand::thread_rng();
     // main game loop
     loop {
-        player_input_system(rx.try_recv());
-
-        // engage other systems
-    }
-}
-
-fn player_input_system(player_input: Result<ChannelPayload, TryRecvError>) {
-    match player_input {
-        Err(_e) => {}, // ignore disconnected socket or empty message buffer
-        Ok(payload) => {
-            match payload {
-                ChannelPayload::Cmd(cmd) => {
-                    println!("Command: {}", cmd);
-                },
-                ChannelPayload::Target((cmd, target)) => {
-                    println!("{} does something to {}", cmd, target);
-                },
-                ChannelPayload::Join((id, name, _socket)) => {
-                    println!("Player {} with id {} joined game", name, id);
+        let player_input = rx.try_recv();
+        match player_input {
+            Err(_e) => {}, // ignore disconnected socket or empty message buffer
+            Ok(payload) => {
+                match payload {
+                    ChannelPayload::Cmd((id, cmd)) => {
+                        match cmd.as_str() {
+                            "look" => {},
+                            _ => {}
+                        }
+                    },
+                    ChannelPayload::Target((id, cmd, target)) => {
+                        println!("{} does something to {}", cmd, target);
+                    },
+                    ChannelPayload::Join((id, name, mut socket)) => {
+                        println!("Player {} with id {} joined game", name, id);
+                        let loc = gs.map[rng.gen_range(0, 101)];
+                        let s = socket.try_clone().unwrap();
+                        gs.ecs
+                            .create_entity()
+                            .with(Player { id, name, socket: s })
+                            .with(loc)
+                            .build();
+                        socket.write(loc.description.as_bytes()).unwrap();
+                        socket.write("\n".as_bytes()).unwrap();
+                    }
                 }
             }
         }
+
+        // engage other systems
     }
 }

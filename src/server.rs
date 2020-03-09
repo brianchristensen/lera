@@ -22,9 +22,9 @@ pub fn start(tx: Sender<ChannelPayload>) {
                     // print game title
                     socket.write(title::print()).unwrap();
                     // wait for player to enter name
-                    get_player_name(socket.try_clone().unwrap(), player_creation_tx);
+                    let id = get_player_name(socket.try_clone().unwrap(), player_creation_tx);
                     // player successfully joined game, wait for commands
-                    wait_for_commands(socket, cmd_tx)
+                    wait_for_commands(id, socket, cmd_tx)
                 });
             }
             Err(e) => {
@@ -36,7 +36,7 @@ pub fn start(tx: Sender<ChannelPayload>) {
     drop(listener);
 }
 
-fn wait_for_commands(mut socket: TcpStream, tx: Sender<ChannelPayload>) {
+fn wait_for_commands(id: Uuid, mut socket: TcpStream, tx: Sender<ChannelPayload>) {
     // create a line reader to collect user input
     let reader_socket = socket.try_clone().unwrap();
     let mut reader = BufReader::new(reader_socket);
@@ -55,9 +55,9 @@ fn wait_for_commands(mut socket: TcpStream, tx: Sender<ChannelPayload>) {
                 let fmt_cmd = raw_cmd.replace("\n", "");
                 let cmd = fmt_cmd.as_str().split(' ').filter(|&x| x != "").collect::<Vec<&str>>();
                 if cmd.len() == 1 {
-                    tx.send(ChannelPayload::Cmd(cmd[0].to_lowercase())).unwrap();
+                    tx.send(ChannelPayload::Cmd((id, cmd[0].to_lowercase()))).unwrap();
                 } else if cmd.len() == 2 {
-                    tx.send(ChannelPayload::Target((cmd[0].to_lowercase(), cmd[1].to_lowercase()))).unwrap();
+                    tx.send(ChannelPayload::Target((id, cmd[0].to_lowercase(), cmd[1].to_lowercase()))).unwrap();
                 } else {
                     socket.write(format!("Unknown command: {}", cmd[0]).as_bytes()).unwrap();
                 }
@@ -74,7 +74,7 @@ fn wait_for_commands(mut socket: TcpStream, tx: Sender<ChannelPayload>) {
     }
 }
 
-fn get_player_name(mut socket: TcpStream, tx: Sender<ChannelPayload>) {
+fn get_player_name(mut socket: TcpStream, tx: Sender<ChannelPayload>) -> Uuid {
     // generate uuid for client
     let id = Uuid::new_v4();
 
@@ -97,6 +97,7 @@ fn get_player_name(mut socket: TcpStream, tx: Sender<ChannelPayload>) {
                 let cmd = String::from(std::str::from_utf8(&ascii).unwrap());
 
                 if cmd.len() >= 2 && cmd != " " {
+                    socket.write(format!("Welcome {}!\n\n", cmd).as_bytes()).unwrap();
                     tx.send(ChannelPayload::Join((id, cmd, socket))).unwrap();
                     break 'naming_game
                 } else {
@@ -111,4 +112,5 @@ fn get_player_name(mut socket: TcpStream, tx: Sender<ChannelPayload>) {
             }
         }
     }
+    id
 }

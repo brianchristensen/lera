@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 rand = "0.7.3"
 uuid = { version = "0.8", features = ["v4"] }
+specs = "0.16.1"
+specs-derive = "0.4.0"

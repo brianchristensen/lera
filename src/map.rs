@@ -1,17 +1,13 @@
-pub struct Location {
-    pub description: String
-}
+use crate::component::Location;
 
 impl Location {
-    pub fn gen_map() -> Vec<Vec<Location>> {
-        let mut map: Vec<Vec<Location>> = vec![];
+    pub fn gen_map() -> Vec<Location> {
+        let mut map: Vec<Location> = vec![];
         let descriptions = descriptions();
         for i in 0..9 {
-            let mut v: Vec<Location> = vec![];
             for j in 0..9 {
-                v.push(Location { description: String::from(descriptions[if i == 0 {j} else {(10*i)+j}]) });
+                map.push(Location { address: (i, j), description: descriptions[if i == 0 {j} else {(10*i)+j}] });
             }
-            map.push(v);
         }
         map
     }

@@ -4,8 +4,8 @@ use std::sync::mpsc::{Sender, Receiver};
 use std::net::TcpStream;
 
 pub enum ChannelPayload {
-  Cmd(String),
-  Target((String, String)),
+  Cmd((Uuid, String)),
+  Target((Uuid, String, String)),
   Join((Uuid, String, TcpStream)),
 }
 
