@@ -177,7 +177,20 @@ impl GameState {
     }
 
     pub fn remove_player(&mut self, id: Uuid) {
-        let p_entity = self.players.get(&id).unwrap();
-        self.ecs.delete_entity(*p_entity).unwrap();
+        let (eid, name, current_loc, _socket) = self.get_player_data(id);
+        self.ecs.delete_entity(eid).unwrap();
+
+        let entities = self.ecs.entities();
+        let players = self.ecs.read_storage::<Player>();
+        let locations = self.ecs.read_storage::<Location>();
+
+        for (entity, player, p_loc) in (&entities, &players, &locations).join() {
+            // print to players from the room the client disconnected from
+            if p_loc.address == current_loc.address && eid != entity {
+              let f_msg = format!("{} has left the land of Lera\n", name);
+              let mut txs = player.socket.try_clone().unwrap();
+              txs.write(fill(f_msg.as_str(), TERMWIDTH).as_bytes()).unwrap();
+            }
+        }
     }
 }
