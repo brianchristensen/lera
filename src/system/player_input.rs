@@ -5,7 +5,7 @@ use std::sync::mpsc::TryRecvError;
 
 pub fn player_input_system(gs: &mut GameState, player_input: Result<ChannelPayload, TryRecvError>) {
     match player_input {
-        Err(_e) => {}, // ignore disconnected socket or empty message buffer
+        Err(_e) => {} // ignore empty player_input buffer and disconnected channels
         Ok(payload) => {
             match payload {
                 // single word commands without a target/payload
@@ -23,8 +23,13 @@ pub fn player_input_system(gs: &mut GameState, player_input: Result<ChannelPaylo
                             n s e w: Travel in the specified direction\n\
                             l or look: View your current location\n\
                             s or say: Speak to other players in your current location\n\
-                            help: View the list of commands\n\n\
-                            ");
+                            help: View the list of commands\n\
+                            quit or exit: Leave the land of Lera\n\
+                            \n");
+                        },
+                        "quit" | "exit" => {
+                            println!("Player with id {} left the game", id);
+                            gs.remove_player(id);
                         },
                         _ => { gs.msg_player(id, format!("Unkown command: {}\n", cmd).as_str()); }
                     }

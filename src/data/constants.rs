@@ -15,3 +15,8 @@ impl Direction {
     }
   }
 }
+
+pub const MAP_Y_MIN: usize = 0;
+pub const MAP_Y_MAX: usize = 9;
+pub const MAP_X_MIN: usize = 0;
+pub const MAP_X_MAX: usize = 9;

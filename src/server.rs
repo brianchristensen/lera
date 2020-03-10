@@ -56,12 +56,16 @@ fn wait_for_commands(id: Uuid, mut socket: TcpStream, tx: Sender<ChannelPayload>
                 let cmd = fmt_cmd.as_str().split(' ').filter(|&x| x != "").collect::<Vec<&str>>();
 
                 if cmd.len() == 1 {
+                    let lc_cmd = cmd[0].to_lowercase();
                     tx.send(ChannelPayload::Cmd((id, cmd[0].to_lowercase()))).unwrap();
+                    if lc_cmd == "quit" || lc_cmd == "exit" { socket.shutdown(Shutdown::Both).unwrap(); break; };
                 } else if cmd.len() >= 2 {
                     let target = cmd[1..].join(" ");
                     tx.send(ChannelPayload::Target((id, cmd[0].to_lowercase(), target))).unwrap();
                 } else {
-                    socket.write(format!("Unknown command: {}", cmd[0]).as_bytes()).unwrap();
+                    socket.write(format!("Lera is forcefully removing you for sending empty commands\n").as_bytes()).unwrap();
+                    tx.send(ChannelPayload::Cmd((id, String::from("quit")))).unwrap();
+                    break
                 }
 
                 buf.drain(..);

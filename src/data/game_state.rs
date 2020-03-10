@@ -93,7 +93,7 @@ impl GameState {
 
         let (can_move, to, from): (bool, &str, &str) = match direction {
             Direction::N => {
-                if y < 9 {
+                if y < MAP_Y_MAX {
                     new_addr = (x, y+1);
                     (true, "north", "south")
                 } else {
@@ -101,7 +101,7 @@ impl GameState {
                 }
             },
             Direction::S => {
-                if y > 0 {
+                if y > MAP_Y_MIN {
                     new_addr = (x, y-1);
                     (true, "south", "north")
                 } else {
@@ -109,7 +109,7 @@ impl GameState {
                 }
             },
             Direction::E => {
-                if x < 9 {
+                if x < MAP_X_MAX {
                     new_addr = (x+1, y);
                     (true, "east", "west")
                 } else {
@@ -117,7 +117,7 @@ impl GameState {
                 }
             },
             Direction::W => {
-                if x > 0 {
+                if x > MAP_X_MIN {
                     new_addr = (x-1, y);
                     (true, "west", "east")
                 } else {
@@ -174,5 +174,10 @@ impl GameState {
               txs.write(fill(f_msg.as_str(), TERMWIDTH).as_bytes()).unwrap();
             }
         }
+    }
+
+    pub fn remove_player(&mut self, id: Uuid) {
+        let p_entity = self.players.get(&id).unwrap();
+        self.ecs.delete_entity(*p_entity).unwrap();
     }
 }

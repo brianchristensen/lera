@@ -1,12 +1,13 @@
 use crate::data::component::Location;
+use crate::data::constants::*;
 use std::collections::HashMap;
 
 impl Location {
     pub fn gen_map() -> HashMap<(usize, usize), Location> {
         let mut map: HashMap<(usize, usize), Location> = HashMap::new();
         let descriptions = descriptions();
-        for i in 0..10 {
-            for j in 0..10 {
+        for i in MAP_X_MIN..MAP_X_MAX+1 {
+            for j in MAP_Y_MIN..MAP_Y_MAX+1 {
                 map.insert((i, j), Location { address: (i, j), description: descriptions[if i == 0 {j} else {(10*i)+j}] });
             }
         }
@@ -14,6 +15,7 @@ impl Location {
     }
 }
 
+// must be a number of rooms equal to constants MAP_X_MAX * MAP_Y_MAX
 fn descriptions() -> [&'static str;100] {
     [
         "A crack in the ceiling above the middle of the north wall allows a trickle of water to flow down to the floor. The water pools near the base of the wall, and a rivulet runs along the wall an out into the hall. The water smells fresh.",

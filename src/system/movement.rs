@@ -49,10 +49,10 @@ impl<'a> System<'a> for MoveSystem {
                     let mut exits = String::new();
                     let mut player_names = String::new();
 
-                    if y < 9 { exits.push_str("N "); }
-                    if y > 0 { exits.push_str("S "); }
-                    if x < 9 { exits.push_str("E "); }
-                    if x > 0 { exits.push_str("W "); }
+                    if y < MAP_Y_MAX { exits.push_str("N "); }
+                    if y > MAP_Y_MIN { exits.push_str("S "); }
+                    if x < MAP_X_MAX { exits.push_str("E "); }
+                    if x > MAP_X_MIN { exits.push_str("W "); }
 
                     for (entity, name, location) in (&entities, &names, &locations).join() {
                         if location.address == l.address && e != entity {
