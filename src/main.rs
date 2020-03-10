@@ -22,9 +22,12 @@ fn main() {
         players: HashMap::new(),
         map: Location::gen_map()
     };
+    // register entity components
     gs.ecs.register::<Player>();
     gs.ecs.register::<Name>();
     gs.ecs.register::<Location>();
+    gs.ecs.register::<Speaking>();
+    gs.ecs.register::<Moving>();
 
     // player thread input channel - messages are all received by the main thread from the socket server
     let (tx, rx) = channel::start();

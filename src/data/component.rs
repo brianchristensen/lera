@@ -8,11 +8,23 @@ pub struct Player {
 
 #[derive(Component)]
 pub struct Name {
-  pub name: String
+  pub val: String
 }
 
 #[derive(Debug, Component, Clone, Copy)]
 pub struct Location {
   pub description: &'static str,
   pub address: (usize, usize)
+}
+
+#[derive(Component)]
+pub struct Speaking {
+  pub msg: String
+}
+
+#[derive(Component)]
+pub struct Moving {
+  pub loc: Location,
+  pub to: String,
+  pub from: String
 }

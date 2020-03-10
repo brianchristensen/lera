@@ -1,12 +1,13 @@
 use crate::data::component::Location;
+use std::collections::HashMap;
 
 impl Location {
-    pub fn gen_map() -> Vec<Location> {
-        let mut map: Vec<Location> = vec![];
+    pub fn gen_map() -> HashMap<(usize, usize), Location> {
+        let mut map: HashMap<(usize, usize), Location> = HashMap::new();
         let descriptions = descriptions();
         for i in 0..10 {
             for j in 0..10 {
-                map.push(Location { address: (i, j), description: descriptions[if i == 0 {j} else {(10*i)+j}] });
+                map.insert((i, j), Location { address: (i, j), description: descriptions[if i == 0 {j} else {(10*i)+j}] });
             }
         }
         map
