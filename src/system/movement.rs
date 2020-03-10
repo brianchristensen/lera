@@ -60,7 +60,7 @@ impl<'a> System<'a> for MoveSystem {
                         }
                     };
 
-                    let loc = format!("\n{}\nExits: {}\n{}\n\n",
+                    let loc = format!("\n{}\nExits: {}\n{}\n",
                         fill(l.description, TERMWIDTH),
                         exits,
                         fill(player_names.as_str(), TERMWIDTH)

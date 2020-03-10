@@ -77,7 +77,7 @@ impl GameState {
             }
         };
 
-        let loc = format!("\n{}\nExits: {}\n{}\n\n",
+        let loc = format!("\n{}\nExits: {}\n{}\n",
             fill(current_loc.description, TERMWIDTH),
             exits,
             fill(entity_names.as_str(), TERMWIDTH)
