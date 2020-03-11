@@ -20,11 +20,11 @@ pub fn player_input_system(gs: &mut GameState, player_input: Result<ChannelPaylo
                         },
                         "help" => {
                             gs.msg_player(id, "\
-                            n s e w: Travel in the specified direction\n\
-                            l or look: View your current location\n\
-                            s or say: Speak to other players in your current location\n\
-                            help: View the list of commands\n\
-                            quit or exit: Leave the land of Lera\n\
+                            n s e w      : Travel in the specified direction\n\
+                            l or look    : View your current location\n\
+                            s or say     : Speak to other players in your current location\n\
+                            help         : View the list of commands\n\
+                            quit or exit : Leave the land of Lera\n\
                             \n");
                         },
                         "quit" | "exit" => {

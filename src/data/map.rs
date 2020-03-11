@@ -1,24 +1,139 @@
 use crate::data::component::Location;
 use crate::data::constants::*;
-use std::collections::HashMap;
 
 impl Location {
-    pub fn gen_map() -> HashMap<(usize, usize), Location> {
-        let mut map: HashMap<(usize, usize), Location> = HashMap::new();
-        let descriptions = descriptions();
-        for i in MAP_X_MIN..MAP_X_MAX+1 {
-            for j in MAP_Y_MIN..MAP_Y_MAX+1 {
-                map.insert((i, j), Location { address: (i, j), description: descriptions[if i == 0 {j} else {(10*i)+j}] });
-            }
-        }
+    pub const fn get_map() -> [[Location; MAP_X_MAX+1]; MAP_Y_MAX+1] {
+        let desc = descriptions();
+        let map = [
+            [
+                Location { address: (0, 0), description: desc[0] },
+                Location { address: (0, 1), description: desc[1] },
+                Location { address: (0, 2), description: desc[2] },
+                Location { address: (0, 3), description: desc[3] },
+                Location { address: (0, 4), description: desc[4] },
+                Location { address: (0, 5), description: desc[5] },
+                Location { address: (0, 6), description: desc[6] },
+                Location { address: (0, 7), description: desc[7] },
+                Location { address: (0, 8), description: desc[8] },
+                Location { address: (0, 9), description: desc[9] },
+            ],
+            [
+                Location { address: (1, 0), description: desc[10] },
+                Location { address: (1, 1), description: desc[11] },
+                Location { address: (1, 2), description: desc[12] },
+                Location { address: (1, 3), description: desc[13] },
+                Location { address: (1, 4), description: desc[14] },
+                Location { address: (1, 5), description: desc[15] },
+                Location { address: (1, 6), description: desc[16] },
+                Location { address: (1, 7), description: desc[17] },
+                Location { address: (1, 8), description: desc[18] },
+                Location { address: (1, 9), description: desc[19] },
+            ],
+            [
+                Location { address: (2, 0), description: desc[20] },
+                Location { address: (2, 1), description: desc[21] },
+                Location { address: (2, 2), description: desc[22] },
+                Location { address: (2, 3), description: desc[23] },
+                Location { address: (2, 4), description: desc[24] },
+                Location { address: (2, 5), description: desc[25] },
+                Location { address: (2, 6), description: desc[26] },
+                Location { address: (2, 7), description: desc[27] },
+                Location { address: (2, 8), description: desc[28] },
+                Location { address: (2, 9), description: desc[29] },
+            ],
+            [
+                Location { address: (3, 0), description: desc[30] },
+                Location { address: (3, 1), description: desc[31] },
+                Location { address: (3, 2), description: desc[32] },
+                Location { address: (3, 3), description: desc[33] },
+                Location { address: (3, 4), description: desc[34] },
+                Location { address: (3, 5), description: desc[35] },
+                Location { address: (3, 6), description: desc[36] },
+                Location { address: (3, 7), description: desc[37] },
+                Location { address: (3, 8), description: desc[38] },
+                Location { address: (3, 9), description: desc[39] },
+            ],
+            [
+                Location { address: (4, 0), description: desc[40] },
+                Location { address: (4, 1), description: desc[41] },
+                Location { address: (4, 2), description: desc[42] },
+                Location { address: (4, 3), description: desc[43] },
+                Location { address: (4, 4), description: desc[44] },
+                Location { address: (4, 5), description: desc[45] },
+                Location { address: (4, 6), description: desc[46] },
+                Location { address: (4, 7), description: desc[47] },
+                Location { address: (4, 8), description: desc[48] },
+                Location { address: (4, 9), description: desc[49] },
+            ],
+            [
+                Location { address: (5, 0), description: desc[50] },
+                Location { address: (5, 1), description: desc[51] },
+                Location { address: (5, 2), description: desc[52] },
+                Location { address: (5, 3), description: desc[53] },
+                Location { address: (5, 4), description: desc[54] },
+                Location { address: (5, 5), description: desc[55] },
+                Location { address: (5, 6), description: desc[56] },
+                Location { address: (5, 7), description: desc[57] },
+                Location { address: (5, 8), description: desc[58] },
+                Location { address: (5, 9), description: desc[59] },
+            ],
+            [
+                Location { address: (6, 0), description: desc[60] },
+                Location { address: (6, 1), description: desc[61] },
+                Location { address: (6, 2), description: desc[62] },
+                Location { address: (6, 3), description: desc[63] },
+                Location { address: (6, 4), description: desc[64] },
+                Location { address: (6, 5), description: desc[65] },
+                Location { address: (6, 6), description: desc[66] },
+                Location { address: (6, 7), description: desc[67] },
+                Location { address: (6, 8), description: desc[68] },
+                Location { address: (6, 9), description: desc[69] },
+            ],
+            [
+                Location { address: (7, 0), description: desc[70] },
+                Location { address: (7, 1), description: desc[71] },
+                Location { address: (7, 2), description: desc[72] },
+                Location { address: (7, 3), description: desc[73] },
+                Location { address: (7, 4), description: desc[74] },
+                Location { address: (7, 5), description: desc[75] },
+                Location { address: (7, 6), description: desc[76] },
+                Location { address: (7, 7), description: desc[77] },
+                Location { address: (7, 8), description: desc[78] },
+                Location { address: (7, 9), description: desc[79] },
+            ],
+            [
+                Location { address: (8, 0), description: desc[80] },
+                Location { address: (8, 1), description: desc[81] },
+                Location { address: (8, 2), description: desc[82] },
+                Location { address: (8, 3), description: desc[83] },
+                Location { address: (8, 4), description: desc[84] },
+                Location { address: (8, 5), description: desc[85] },
+                Location { address: (8, 6), description: desc[86] },
+                Location { address: (8, 7), description: desc[87] },
+                Location { address: (8, 8), description: desc[88] },
+                Location { address: (8, 9), description: desc[89] },
+            ],
+            [
+                Location { address: (9, 0), description: desc[90] },
+                Location { address: (9, 1), description: desc[91] },
+                Location { address: (9, 2), description: desc[92] },
+                Location { address: (9, 3), description: desc[93] },
+                Location { address: (9, 4), description: desc[94] },
+                Location { address: (9, 5), description: desc[95] },
+                Location { address: (9, 6), description: desc[96] },
+                Location { address: (9, 7), description: desc[97] },
+                Location { address: (9, 8), description: desc[98] },
+                Location { address: (9, 9), description: desc[99] },
+            ],
+        ];
         map
     }
 }
 
 // must be a number of rooms equal to constants MAP_X_MAX * MAP_Y_MAX
-fn descriptions() -> [&'static str;100] {
+const fn descriptions() -> [&'static str;100] {
     [
-        "A crack in the ceiling above the middle of the north wall allows a trickle of water to flow down to the floor. The water pools near the base of the wall, and a rivulet runs along the wall an out into the hall. The water smells fresh.",
+        "A crack in the ceiling above the middle of the north wall allows a trickle of water to flow down to the floor. The water pools near the base of the wall, and a rivulet runs along the wall and out into the hall. The water smells fresh.",
         "Thick cobwebs fill the corners of the room, and wisps of webbing hang from the ceiling and waver in a wind you can barely feel. One corner of the ceiling has a particularly large clot of webbing within which a goblin's bones are tangled.",
         "Tapestries decorate the walls of this room. Although they may once have been brilliant in hue, they now hang in graying tatters. Despite the damage of time and neglect, you can perceive once-grand images of wizards' towers, magical beasts, and symbols of spellcasting. The tapestry that is in the best condition bulges out weirdly, as though someone stands behind it (an armless statue of a female human spellcaster).",
         "Rats inside the room shriek when they hear the door open, then they run in all directions from a putrid corpse lying in the center of the floor. As these creatures crowd around the edges of the room, seeking to crawl through a hole in one corner, they fight one another. The stinking corpse in the middle of the room looks human, but the damage both time and the rats have wrought are enough to make determining its race by appearance an extremely difficult task at best.",

@@ -1,3 +1,4 @@
+use crate::data::constants::*;
 use specs::prelude::*;
 use std::net::TcpStream;
 
@@ -5,6 +6,9 @@ use std::net::TcpStream;
 pub struct Player {
   pub socket: TcpStream
 }
+
+#[derive(Component)]
+pub struct NPC {}
 
 #[derive(Component)]
 pub struct Name {
@@ -24,7 +28,8 @@ pub struct Speaking {
 
 #[derive(Component)]
 pub struct Moving {
-  pub loc: Location,
-  pub to: String,
-  pub from: String
+  pub direction: Direction
 }
+
+#[derive(Component)]
+pub struct Aggressive {}
