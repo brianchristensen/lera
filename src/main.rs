@@ -44,7 +44,7 @@ fn main() {
     loop {
         let player_input = rx.try_recv();
         gs.tick(player_input);
-        // 16 tps
+        // 60 tps
         thread::sleep(time::Duration::from_millis(16));
     }
 }
